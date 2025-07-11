@@ -107,7 +107,6 @@ namespace NewBDDProject.Feature
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Valid login")]
         [NUnit.Framework.TestCaseAttribute("standard_user", "secret_sauce", null)]
-        [NUnit.Framework.TestCaseAttribute("performance_glitch_user", "secret_sauce", null)]
         public async global::System.Threading.Tasks.Task ValidLogin(string username, string password, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;

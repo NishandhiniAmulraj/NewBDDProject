@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NewBDDProject.CoreLayer.Helpers;
+using OpenQA.Selenium;
 using System;
 using System.IO;
 
@@ -8,15 +9,19 @@ namespace NewBDDProject.CoreLayer.Screenshot
     {
         public static string Capture(IWebDriver driver, string name)
         {
-            var folder = Path.Combine("Reports", "Screenshot");
+            var projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
+            var folder = Path.Combine(projectRoot, "Screenshots");
             Directory.CreateDirectory(folder);
-
             var file = Path.Combine(folder, $"{name}_{DateTime.Now:yyyyMMdd_HHmmss}.png");
-            var ss = ((ITakesScreenshot)driver).GetScreenshot();
-
-            ss.SaveAsFile(file);
-
+            ((ITakesScreenshot)driver).GetScreenshot().SaveAsFile(file);
             return file;
+            /*  var root = ConfigHelper.Instance.ReportRoot;
+              var folder = Path.Combine(AppContext.BaseDirectory, root, "Screenshots");
+              Directory.CreateDirectory(folder);
+
+              var file = Path.Combine(folder, $"{name}_{DateTime.Now:yyyyMMdd_HHmmss}.png");
+              ((ITakesScreenshot)driver).GetScreenshot().SaveAsFile(file);
+              return file; */
         }
     }
 }

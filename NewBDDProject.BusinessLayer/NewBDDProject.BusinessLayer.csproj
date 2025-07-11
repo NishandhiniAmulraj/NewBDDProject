@@ -43,9 +43,6 @@
     <Reference Include="ExtentReports, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ExtentReports.5.0.4\lib\netstandard2.0\ExtentReports.dll</HintPath>
     </Reference>
-    <Reference Include="FluentAssertions, Version=8.4.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentAssertions.8.4.0\lib\net47\FluentAssertions.dll</HintPath>
-    </Reference>
     <Reference Include="Gherkin, Version=33.0.0.0, Culture=neutral, PublicKeyToken=86496cfa5b4a5851, processorArchitecture=MSIL">
       <HintPath>..\packages\Gherkin.33.0.0\lib\netstandard2.0\Gherkin.dll</HintPath>
     </Reference>
@@ -256,6 +253,7 @@
     <Error Condition="!Exists('..\packages\Reqnroll.Tools.MsBuild.Generation.2.4.1\build\Reqnroll.Tools.MsBuild.Generation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Reqnroll.Tools.MsBuild.Generation.2.4.1\build\Reqnroll.Tools.MsBuild.Generation.targets'))" />
     <Error Condition="!Exists('..\packages\Reqnroll.NUnit.2.4.1\build\Reqnroll.NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Reqnroll.NUnit.2.4.1\build\Reqnroll.NUnit.props'))" />
     <Error Condition="!Exists('..\packages\Reqnroll.NUnit.2.4.1\build\Reqnroll.NUnit.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Reqnroll.NUnit.2.4.1\build\Reqnroll.NUnit.targets'))" />
+    <Error Condition="!Exists('..\packages\Selenium.Firefox.WebDriver.0.27.0\build\Selenium.Firefox.WebDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.Firefox.WebDriver.0.27.0\build\Selenium.Firefox.WebDriver.targets'))" />
   </Target>
   <Import Project="..\packages\Selenium.WebDriver.MSEdgeDriver.138.0.3351.65\build\Selenium.WebDriver.MSEdgeDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.MSEdgeDriver.138.0.3351.65\build\Selenium.WebDriver.MSEdgeDriver.targets')" />
   <Import Project="..\packages\Selenium.WebDriver.4.34.0\build\Selenium.WebDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.4.34.0\build\Selenium.WebDriver.targets')" />
@@ -263,4 +261,5 @@
   <Import Project="..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\build\Microsoft.CodeAnalysis.Analyzers.targets" Condition="Exists('..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\build\Microsoft.CodeAnalysis.Analyzers.targets')" />
   <Import Project="..\packages\Reqnroll.Tools.MsBuild.Generation.2.4.1\build\Reqnroll.Tools.MsBuild.Generation.targets" Condition="Exists('..\packages\Reqnroll.Tools.MsBuild.Generation.2.4.1\build\Reqnroll.Tools.MsBuild.Generation.targets')" />
   <Import Project="..\packages\Reqnroll.NUnit.2.4.1\build\Reqnroll.NUnit.targets" Condition="Exists('..\packages\Reqnroll.NUnit.2.4.1\build\Reqnroll.NUnit.targets')" />
+  <Import Project="..\packages\Selenium.Firefox.WebDriver.0.27.0\build\Selenium.Firefox.WebDriver.targets" Condition="Exists('..\packages\Selenium.Firefox.WebDriver.0.27.0\build\Selenium.Firefox.WebDriver.targets')" />
 </Project>

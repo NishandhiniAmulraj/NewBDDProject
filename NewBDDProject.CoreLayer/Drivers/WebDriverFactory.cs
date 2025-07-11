@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using NewBDDProject.CoreLayer.Helpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Edge;
-using NewBDDProject.CoreLayer.Helpers;
+using OpenQA.Selenium.Firefox;
+using System;
 
 namespace NewBDDProject.CoreLayer.Drivers
     {
@@ -17,7 +18,7 @@ namespace NewBDDProject.CoreLayer.Drivers
 
                 switch (browser.ToLower())
                 {
-                    case "chrome":
+                    case "chrome":                      
                         return CreateChromeDriver(cfg.Arguments);
                     case "firefox":
                         return CreateFirefoxDriver(cfg.Arguments);

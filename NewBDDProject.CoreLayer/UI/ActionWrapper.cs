@@ -1,12 +1,14 @@
 ﻿using NewBDDProject.CoreLayer.Screenshot;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NewBDDProject.CoreLayer.UI
@@ -23,7 +25,6 @@ namespace NewBDDProject.CoreLayer.UI
             _wait = new WebDriverWait(driver, timeout);
                 
         }
-
         public void Click(By locator)
         {
             for (int attempt = 1; attempt <= MaxRetries; attempt++)
@@ -35,33 +36,19 @@ namespace NewBDDProject.CoreLayer.UI
                     element.Click();
                     return;
                 }
-                catch (ElementClickInterceptedException ex)
+                catch (ElementClickInterceptedException)
                 {
-                    Console.WriteLine($"Attempt {attempt}: Click intercepted. Trying JS...");
-
-                    try
-                    {
-                        var el = _driver.FindElement(locator);
-                        ScrollIntoView(el);
-                        ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].click();", el);
-                        return;
-                    }
-                    catch
-                    {
-                        //retry
-                    }
-
-                    Task.Delay(500).Wait();
+                    Console.WriteLine($"Attempt {attempt}: click intercepted → retrying JS click");
+                    Thread.Sleep(500);
+                    TryClickWithJs(locator);
                 }
-                catch (StaleElementReferenceException ex)
+                catch (StaleElementReferenceException)
                 {
-                    Console.WriteLine($"Attempt {attempt}: Element stale. Retrying...");
-                    Task.Delay(500).Wait();
+                    Console.WriteLine($"Attempt {attempt}: stale element → retry");
+                    Thread.Sleep(500);
                 }
             }
-
-            var path = ScreenshotHelper.Capture(_driver, "ClickError");
-            Assert.Fail($"Failed to click {locator} after {MaxRetries} attempts. Screenshot at {path}");
+            CaptureAndFail("ClickError", locator);
         }
 
         public void Type(By locator, string text)
@@ -70,23 +57,18 @@ namespace NewBDDProject.CoreLayer.UI
             {
                 try
                 {
-                    var element = _wait.Until(ExpectedConditions.ElementIsVisible(locator));
-                    element.Clear();
-                    element.SendKeys(text);
+                    var el = _wait.Until(ExpectedConditions.ElementIsVisible(locator));
+                    el.Clear();
+                    el.SendKeys(text);
                     return;
                 }
-                catch (StaleElementReferenceException ex)
+                catch (StaleElementReferenceException)
                 {
-                    Console.WriteLine($"Type attempt {attempt} stale: {ex.Message}");
-                    Task.Delay(500).Wait();
-                }
-
-                if (attempt == MaxRetries)
-                {
-                    var path = ScreenshotHelper.Capture(_driver, "TypeError");
-                    Assert.Fail($"Cannot type into {locator} after {MaxRetries} attempts. Screenshot saved at {path}");
+                    Console.WriteLine($"Attempt {attempt}: stale typing → retry");
+                    Thread.Sleep(500);
                 }
             }
+            CaptureAndFail("TypeError", locator);
         }
 
         public string GetText(By locator)
@@ -95,29 +77,46 @@ namespace NewBDDProject.CoreLayer.UI
             {
                 try
                 {
-                    var element = _wait.Until(ExpectedConditions.ElementIsVisible(locator));
-                    return element.Text;
+                    var el = _wait.Until(ExpectedConditions.ElementIsVisible(locator));
+                    return el.Text;
                 }
-                catch (StaleElementReferenceException ex)
+                catch (StaleElementReferenceException)
                 {
-                    Console.WriteLine($"GetText attempt {attempt} stale: {ex.Message}");
-                }
-
-                if (attempt == MaxRetries)
-                {
-                    var path = ScreenshotHelper.Capture(_driver, "GetTextError");
-                    Assert.Fail($"Cannot get text from {locator} after {MaxRetries} attempts. Screenshot saved at {path}");
+                    Console.WriteLine($"Attempt {attempt}: stale text → retry");
+                    Thread.Sleep(500);
                 }
             }
-
-            return string.Empty; // unreachable, but required by compiler
+            CaptureAndFail("GetTextError", locator);
+            return string.Empty;
         }
 
-        private void ScrollIntoView(IWebElement element)
+        /// <summary>
+        /// Hover over an element before further actions.
+        /// </summary>
+        public void Hover(By locator)
         {
-            
-                ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
-           
+            var element = _wait.Until(ExpectedConditions.ElementIsVisible(locator));
+            ScrollIntoView(element);
+            new Actions(_driver).MoveToElement(element).Perform();
+            Console.WriteLine($"Hovered over element: {locator}");
         }
+
+        private void TryClickWithJs(By locator)
+        {
+            var el = _driver.FindElement(locator);
+            ScrollIntoView(el);
+            ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].click();", el);
+        }
+
+        private void ScrollIntoView(IWebElement el)
+        {
+            ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView(true);", el);
+        }
+
+        private void CaptureAndFail(string errorPrefix, By locator)
+        {
+            var path = ScreenshotHelper.Capture(_driver, $"{errorPrefix}_{locator}");
+            Assert.Fail($"{errorPrefix}: failed on {locator}. Screenshot: {path}");
+        }     
     }
 }

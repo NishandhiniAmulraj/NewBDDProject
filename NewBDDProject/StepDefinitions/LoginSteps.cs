@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using NewBDDProject.BusinessLayer.Flows;
+﻿using NewBDDProject.BusinessLayer.Flows;
 using Reqnroll;
 using System;
 using System.Collections.Generic;
@@ -25,9 +24,7 @@ namespace NewBDDProject.StepDefinitions
         {
             //Assert task no: 6
             Assert.True(_flow.IsLoggedIn(), "Login failed");
-            //Fluent Assertions:
-            _flow.IsLoggedIn().Should().BeTrue("user should be logged in after valid credentials");
-
+           
         }
     }
 }

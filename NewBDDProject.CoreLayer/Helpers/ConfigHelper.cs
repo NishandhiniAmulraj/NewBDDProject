@@ -27,5 +27,7 @@ namespace NewBDDProject.CoreLayer.Helpers
         public BrowserConfig GetBrowserConfig(string name) => _cfg.GetSection($"Browsers:{name}").Get<BrowserConfig>();
 
         public string BaseUrl => _cfg["SauceDemo:BaseUrl"];
+        public string ReportRoot => _cfg["ReportRoot"];
+
     }
 }
