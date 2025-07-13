@@ -18,18 +18,15 @@ namespace NewBDDProject.Support
     [Binding]
     public class Hooks
     {
-        private readonly ScenarioContext _sc;
         private static ExtentReports _extent;
         private static ExtentTest _featureTest;
         private ExtentTest _scenarioTest;
-
-        public Hooks(ScenarioContext sc) => _sc = sc;
 
         [BeforeTestRun(Order = 1)]
         public static void SetupReporting()
         {
             var projectRoot = Path.GetFullPath(
-         Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
+                Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
             var reportDir = Path.Combine(projectRoot, "Reports");
             Directory.CreateDirectory(reportDir);
 
@@ -43,68 +40,62 @@ namespace NewBDDProject.Support
 
             _extent = new ExtentReports();
             _extent.AttachReporter(spark);
-
+            Logger.Info("[REPORT] Initialized");
         }
 
-        [BeforeFeature(Order = 2)]
-        public static void FeatureStart(FeatureContext fc)
+        [BeforeFeature]
+        public static void FeatureStart()
         {
-            _featureTest = _extent.CreateTest(fc.FeatureInfo.Title);
-            Logger.Info($"[FEATURE START] {fc.FeatureInfo.Title}");
+            _featureTest = _extent.CreateTest("Feature");
+            Logger.Info("[FEATURE START]");
         }
 
-        [BeforeScenario(Order = 3)]
+        [BeforeScenario]
         [Scope(Tag = "Login")]
         public void ScenarioStart()
         {
-            var title = _sc.ScenarioInfo.Title;
-
-            _scenarioTest = _featureTest.CreateNode(title);
+            _scenarioTest = _featureTest.CreateNode("Scenario");
             _ = DriverManager.Instance;
-            Logger.Info($"[SCENARIO START] {title}");
+            Logger.Info("[SCENARIO START]");
         }
 
-        [BeforeStep, AfterStep(Order = 4)]
+        [BeforeStep]
         [Scope(Tag = "Login")]
         public void LogStep()
         {
-            var info = _sc.StepContext.StepInfo;
-            //_scenarioTest.Info($"→ {_sc.StepContext.StepInfo.Text}");
-            Logger.Info($"[STEP START] {info.StepDefinitionType} {info.Text}");
-            _scenarioTest.Info($"→ {info.Text}");
+            Logger.Info("[STEP START]");
+            _scenarioTest?.Info("→ Step");
         }
 
-        [AfterStep(Order = 5)]
+        [AfterStep]
         [Scope(Tag = "Login")]
-        public void OnFailure()
+        public void AfterStep(ScenarioContext sc)
         {
-            var info = _sc.StepContext.StepInfo;
-            if (_sc.TestError != null)
+            var step = sc.StepContext.StepInfo;
+            if (sc.TestError != null)
             {
-                Logger.Error($"[STEP FAIL] {info.Text}", _sc.TestError);
-                var img = ScreenshotHelper.Capture(DriverManager.Instance, _sc.ScenarioInfo.Title);
-                _scenarioTest.Fail(_sc.TestError.Message).AddScreenCaptureFromPath(img);
+                Logger.Error($"[STEP FAIL] {step.Text}", sc.TestError);
+                var img = ScreenshotHelper.Capture(DriverManager.Instance, sc.ScenarioInfo.Title);
+                _scenarioTest.Fail(sc.TestError.Message).AddScreenCaptureFromPath(img);
             }
             else
             {
-                Logger.Info($"[STEP PASS] {info.Text}");
+                Logger.Info($"[STEP PASS] {step.Text}");
             }
-            
         }
 
-        [AfterScenario(Order = 6)]
+        [AfterScenario]
         [Scope(Tag = "Login")]
         public void ScenarioTeardown()
         {
-            var title = _sc.ScenarioInfo.Title;
-            Logger.Info($"[SCENARIO END] {title}");
+            Logger.Info("[SCENARIO END]");
             DriverManager.Quit();
         }
 
-        [AfterTestRun(Order = 7)]
+        [AfterTestRun]
         public static void FinalizeReport()
         {
-            Logger.Info("[REPORT FLUSH]");
+            Logger.Info("[REPORT] Flushing");
             _extent.Flush();
         }
     }
