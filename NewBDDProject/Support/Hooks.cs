@@ -19,9 +19,9 @@ namespace NewBDDProject.Support
     [Binding]
     public class Hooks
     {
-        private static ExtentReports _extent;
-        private static ExtentTest _featureTest;
-        private ExtentTest _scenarioTest;
+        private static ExtentReports? _extent;
+        private static ExtentTest? _featureTest;
+        private ExtentTest? _scenarioTest;
 
         [BeforeTestRun(Order = 1)]
         public static void SetupReporting()
