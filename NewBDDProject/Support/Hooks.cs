@@ -4,8 +4,9 @@ using AventStack.ExtentReports.Reporter.Config;
 using Microsoft.Extensions.Logging;
 using NewBDDProject.CoreLayer.Drivers;
 using NewBDDProject.CoreLayer.Helpers;
-using NewBDDProject.CoreLayer.Logs;
+using NewBDDProject.CoreLayer.LogClass;
 using NewBDDProject.CoreLayer.Screenshot;
+using NLog;
 using Reqnroll;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace NewBDDProject.Support
             Directory.CreateDirectory(reportDir);
 
             var reportPath = Path.Combine(reportDir, "Report.html");
-            Logger.Info($"Report will be created at {reportPath}");
+            Log.Info($"Report will be created at {reportPath}");
 
             var spark = new ExtentSparkReporter(reportPath);
             spark.Config.DocumentTitle = "Automation Report";
@@ -40,14 +41,14 @@ namespace NewBDDProject.Support
 
             _extent = new ExtentReports();
             _extent.AttachReporter(spark);
-            Logger.Info("[REPORT] Initialized");
+            Log.Info("[REPORT] Initialized");
         }
 
         [BeforeFeature]
         public static void FeatureStart()
         {
             _featureTest = _extent.CreateTest("Feature");
-            Logger.Info("[FEATURE START]");
+            Log.Info("[FEATURE START]");
         }
 
         [BeforeScenario]
@@ -56,14 +57,14 @@ namespace NewBDDProject.Support
         {
             _scenarioTest = _featureTest.CreateNode("Scenario");
             _ = DriverManager.Instance;
-            Logger.Info("[SCENARIO START]");
+            Log.Info("[SCENARIO START]");
         }
 
         [BeforeStep]
         [Scope(Tag = "Login")]
         public void LogStep()
         {
-            Logger.Info("[STEP START]");
+            Log.Info("[STEP START]");
             _scenarioTest?.Info("→ Step");
         }
 
@@ -74,13 +75,13 @@ namespace NewBDDProject.Support
             var step = sc.StepContext.StepInfo;
             if (sc.TestError != null)
             {
-                Logger.Error($"[STEP FAIL] {step.Text}", sc.TestError);
+                Log.Error($"[STEP FAIL] {step.Text}", sc.TestError);
                 var img = ScreenshotHelper.Capture(DriverManager.Instance, sc.ScenarioInfo.Title);
                 _scenarioTest.Fail(sc.TestError.Message).AddScreenCaptureFromPath(img);
             }
             else
             {
-                Logger.Info($"[STEP PASS] {step.Text}");
+                Log.Info($"[STEP PASS] {step.Text}");
             }
         }
 
@@ -88,14 +89,14 @@ namespace NewBDDProject.Support
         [Scope(Tag = "Login")]
         public void ScenarioTeardown()
         {
-            Logger.Info("[SCENARIO END]");
+            Log.Info("[SCENARIO END]");
             DriverManager.Quit();
         }
 
         [AfterTestRun]
         public static void FinalizeReport()
         {
-            Logger.Info("[REPORT] Flushing");
+            Log.Info("[REPORT] Flushing");
             _extent.Flush();
         }
     }

@@ -10,6 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="LogClass\**" />
+    <EmbeddedResource Remove="LogClass\**" />
+    <None Remove="LogClass\**" />
+    <ReqnrollFeatureFiles Remove="LogClass\**" />
+    <ReqnrollObsoleteCodeBehindFiles Remove="LogClass\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Cucumber.CucumberExpressions" Version="18.0.1" />
     <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />

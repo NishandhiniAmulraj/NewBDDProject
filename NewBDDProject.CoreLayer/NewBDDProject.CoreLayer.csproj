@@ -220,7 +220,7 @@
     <Compile Include="Drivers\WebDriverFactory.cs" />
     <Compile Include="Helpers\ConfigHelper.cs" />
     <Compile Include="Locators\LoginPageLocators.cs" />
-    <Compile Include="Logs\Logger.cs" />
+    <Compile Include="LogClass\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screenshot\ScreenshotHelper.cs" />
     <Compile Include="UI\ActionWrapper.cs" />

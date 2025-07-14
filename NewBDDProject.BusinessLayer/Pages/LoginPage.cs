@@ -1,13 +1,8 @@
-﻿using NewBDDProject.BusinessLayer.Pages;
-using NewBDDProject.CoreLayer.Helpers;
+﻿using NewBDDProject.CoreLayer.Helpers;
 using NewBDDProject.CoreLayer.Locators;
-using NewBDDProject.CoreLayer.Logs;
+using NewBDDProject.CoreLayer.LogClass;
 using NewBDDProject.CoreLayer.UI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NewBDDProject.BusinessLayer.Pages
 {
@@ -47,7 +42,7 @@ namespace NewBDDProject.BusinessLayer.Pages
             }
             catch (Exception ex)
             {
-                Logger.Error("Error during login", ex);
+                Log.Error("Error during login", ex);
                 throw;
             }
         }
