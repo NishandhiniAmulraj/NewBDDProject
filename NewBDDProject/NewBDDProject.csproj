@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
 
-	  <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-  </PropertyGroup>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="LogClass\**" />
@@ -44,11 +44,11 @@
     <PackageReference Include="Selenium.WebDriver.MSEdgeDriver" Version="138.0.3351.65" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.7" />
 	  <PackageReference Include="System.Text.Json" Version="9.0.7" />
-
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="NUnit.Framework" />
+
   </ItemGroup>
 
   <ItemGroup>
@@ -74,5 +74,5 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
-
+	
 </Project>
