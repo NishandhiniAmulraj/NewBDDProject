@@ -49,6 +49,9 @@
     <ProjectReference Include="..\NewBDDProject.BusinessLayer\NewBDDProject.BusinessLayer.csproj" />
   </ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\NewBDDProject.CoreLayer\NewBDDProject.CoreLayer.csproj" />
+	</ItemGroup>
+	<ItemGroup>
 		<Content Update="appsettings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
