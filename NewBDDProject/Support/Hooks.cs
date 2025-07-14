@@ -1,18 +1,10 @@
 ﻿using AventStack.ExtentReports;
 using AventStack.ExtentReports.Reporter;
 using AventStack.ExtentReports.Reporter.Config;
-using Microsoft.Extensions.Logging;
 using NewBDDProject.CoreLayer.Drivers;
-using NewBDDProject.CoreLayer.Helpers;
 using NewBDDProject.CoreLayer.LogClass;
 using NewBDDProject.CoreLayer.Screenshot;
-using NLog;
 using Reqnroll;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NewBDDProject.Support
 {
